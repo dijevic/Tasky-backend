@@ -1,14 +1,16 @@
 const { response, request } = require('express')
 const Task = require('../models/Task')
 const Usuario = require('../models/Usuario')
+const Category = require('../models/Category')
 
 const CreateTask = async (req = request, res = response) => {
 
-    const { description } = req.body
+    const { description, categoryId } = req.body
     const user = req.usuario
 
     try {
-        const task = await Task.create({ description, user_id: user.getDataValue('id') })
+        const category = await Category.findOne({ where: { uuid: categoryId } })
+        const task = await Task.create({ description, user_id: user.getDataValue('id'), category_id: category.getDataValue('id') })
 
         res.json({
             ok: true,

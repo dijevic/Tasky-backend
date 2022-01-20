@@ -38,7 +38,7 @@ const getUsers = async (req = request, res = response) => {
                 users: rows
             })
         }
-        const { count, rows } = await Usuario.findAndCountAll()
+        const { count, rows } = await Usuario.findAndCountAll({ include: ['categories', 'tasks'] })
 
         res.json({
             ok: true,

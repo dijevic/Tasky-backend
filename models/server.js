@@ -3,6 +3,7 @@ const cors = require('cors');
 const sequelize = require('../DB/db.config');
 const Usuario = require('../models/Usuario')
 const Task = require('../models/Task')
+const Category = require('../models/Category')
 
 
 
@@ -14,7 +15,8 @@ class Server {
         this.paths = {
             auth: '/api/v1/auth',
             user: '/api/v1/user',
-            task: '/api/v1/task'
+            category: '/api/v1/category',
+            task: '/api/v1/task',
 
         }
         this.dbConection()
@@ -28,6 +30,15 @@ class Server {
         try {
             Usuario.hasMany(Task, { foreignKey: `user_id`, as: 'tasks' })
             Task.belongsTo(Usuario, { foreignKey: `user_id`, as: 'user' })
+
+
+            Usuario.hasMany(Category, { foreignKey: `category_user_id`, as: 'categories' })
+            Category.belongsTo(Usuario, { foreignKey: `category_user_id`, as: 'user_category_id' })
+
+
+            Category.hasMany(Task, { foreignKey: `category_id`, as: 'category_tasks' })
+            Task.belongsTo(Category, { foreignKey: `category_id`, as: 'task_category' })
+
 
             await sequelize.sync({ alter: true })
             console.log('db online')
@@ -48,6 +59,7 @@ class Server {
         this.app.use(this.paths.auth, require('../routes/auth'))
         this.app.use(this.paths.user, require('../routes/user'))
         this.app.use(this.paths.task, require('../routes/task'))
+        this.app.use(this.paths.category, require('../routes/category'))
 
     }
 
