@@ -19,6 +19,14 @@ const Task = sequelize.define('Task', {
             return rawValue = undefined;
         }
     },
+    category_id: {
+        type: DataTypes.INTEGER,
+        get() {
+            let rawValue = this.getDataValue('category_id');
+            return rawValue = undefined;
+        }
+    },
+
     uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4

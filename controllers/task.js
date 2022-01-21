@@ -5,11 +5,11 @@ const Category = require('../models/Category')
 
 const CreateTask = async (req = request, res = response) => {
 
-    const { description, categoryId } = req.body
+    const { description, task_category } = req.body
     const user = req.usuario
 
     try {
-        const category = await Category.findOne({ where: { uuid: categoryId } })
+        const category = await Category.findOne({ where: { uuid: task_category } })
         const task = await Task.create({ description, user_id: user.getDataValue('id'), category_id: category.getDataValue('id') })
 
         res.json({
@@ -29,7 +29,7 @@ const getTasks = async (req = request, res = response) => {
 
 
     try {
-        const tasks = await Task.findAll({ include: `user` })
+        const tasks = await Task.findAll({ include: [`task_category`, 'user'] })
         const total = await Task.count()
 
         res.json({
@@ -53,14 +53,23 @@ const getTasksByUser = async (req = request, res = response) => {
     try {
         const user = req.usuario
 
-        const { rows, count } = await Task.findAndCountAll({ where: { user_id: user.getDataValue('id') } })
-
+        const rows = await Task.findAll({
+            where: {
+                user_id: user.getDataValue('id')
+            },
+            include: {
+                model: Category,
+                as: 'task_category',
+                attributes: ['uuid']
+            }
+        })
+        console.log(rows)
         res.json({
             ok: true,
             status: 200,
             msg: `success`,
-            tasks: rows,
-            total: count
+            rows
+
 
         })
 
