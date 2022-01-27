@@ -103,8 +103,7 @@ const registerUser = async (req = request, res = response) => {
             token,
             name: user.name,
             email: user.email,
-            id: user.uuid,
-            category
+            id: user.uuid
         })
 
     } catch (e) {
@@ -150,7 +149,7 @@ const ForgotPassword = async (req = request, res = response) => {
         await usuario.update({ resetToken })
 
         // Todo: camabiar a vriable d entorno
-        const link = `http://localhost:3000/auth/change-password/${resetToken}`
+        const link = `https://taskys.netlify.app/auth/change-password/${resetToken}`
 
 
         // no olvidar enviar
@@ -163,8 +162,7 @@ const ForgotPassword = async (req = request, res = response) => {
             ok: true,
             status: 200,
             msg: 'a link was send to your email !',
-            link,
-            resetToken
+            link
         })
 
     } catch (e) {
@@ -213,21 +211,21 @@ const registrationCheckingEmail = async (req = request, res = response) => {
 
         // genero JWT 
         const token = await generarRegistrationJWT(email, password, name)
-        const link = `http://localhost:3000/auth/finish-registration/${token}`
+        const link = `https://taskys.netlify.app/auth/finish-registration/${token}`
         // envio el email
 
-        // try {
+        try {
 
-        //     sendRegistrationEmail(email, link)
+            sendRegistrationEmail(email, link)
 
-        // } catch (e) {
-        //     console.log(e)
-        //     return res.status(404).json({
-        //         ok: false,
-        //         status: 404,
-        //         msg: `something went wrong`,
-        //     })
-        // }
+        } catch (e) {
+            console.log(e)
+            return res.status(404).json({
+                ok: false,
+                status: 404,
+                msg: `something went wrong`,
+            })
+        }
 
         res.status(200).json({
             ok: true,
