@@ -60,7 +60,7 @@ const getTasksByUser = async (req = request, res = response) => {
             include: {
                 model: Category,
                 as: 'task_category',
-                attributes: ['uuid']
+                attributes: ['uuid', 'name']
             }
         })
         console.log(rows)
@@ -68,14 +68,13 @@ const getTasksByUser = async (req = request, res = response) => {
             ok: true,
             status: 200,
             msg: `success`,
-            rows
+            tasks: rows
 
 
         })
 
     } catch (e) {
-        console.log(e)
-        // throw new Error(e)
+        throw new Error(e)
     }
 
 }
@@ -104,8 +103,7 @@ const getTasksById = async (req = request, res = response) => {
         })
 
     } catch (e) {
-        console.log(e)
-        // throw new Error(e)
+        throw new Error(e)
     }
 
 }
@@ -152,7 +150,14 @@ const updateTask = async (req = request, res = response) => {
 
 
     try {
-        const task = await Task.findOne({ where: { uuid } })
+        const task = await Task.findOne({
+            where: { uuid },
+            include: {
+                model: Category,
+                as: 'task_category',
+                attributes: ['uuid', 'name']
+            }
+        })
 
         if (!task) {
             return res.status(404).json({
@@ -163,16 +168,15 @@ const updateTask = async (req = request, res = response) => {
         }
 
         task.set(body)
-        console.log(body)
-        // task.description = description
+
 
         await task.save()
 
 
         res.json({
             ok: true,
-            // status: 200,
-            // msg: `task updated successfully!`,
+            status: 200,
+            msg: `task updated successfully!`,
             task
 
 

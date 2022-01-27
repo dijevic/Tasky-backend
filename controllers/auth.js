@@ -5,6 +5,7 @@ const Usuario = require('../models/Usuario')
 const { encriptar, comprobarContrasena } = require('../helpers/encriptar')
 const { sendRecoverEmail, sendRegistrationEmail } = require('../helpers/sendEmail')
 const { generaJWT, generarRegistrationJWT, generarJWTChangePassword } = require('../helpers/generarJwt')
+const Category = require('../models/Category')
 
 
 const renewUserToken = async (req = request, res = response) => {
@@ -88,19 +89,22 @@ const registerUser = async (req = request, res = response) => {
             password: encriptar(password)
 
         }
-        const usuario = await Usuario.create(data)
+
+        const user = await Usuario.create(data)
+        const category = await Category.create({ name: 'General', category_user_id: user.getDataValue('id') })
 
 
         // genero JWT 
-        const token = await generaJWT(usuario.uuid)
+        const token = await generaJWT(user.uuid)
 
         res.status(200).json({
             ok: true,
             msg: 'success register',
             token,
-            name: usuario.name,
-            email: usuario.email,
-            id: usuario.uuid
+            name: user.name,
+            email: user.email,
+            id: user.uuid,
+            category
         })
 
     } catch (e) {
@@ -212,18 +216,18 @@ const registrationCheckingEmail = async (req = request, res = response) => {
         const link = `http://localhost:3000/auth/finish-registration/${token}`
         // envio el email
 
-        try {
+        // try {
 
-            sendRegistrationEmail(email, link)
+        //     sendRegistrationEmail(email, link)
 
-        } catch (e) {
-            console.log(e)
-            return res.status(404).json({
-                ok: false,
-                status: 404,
-                msg: `something went wrong`,
-            })
-        }
+        // } catch (e) {
+        //     console.log(e)
+        //     return res.status(404).json({
+        //         ok: false,
+        //         status: 404,
+        //         msg: `something went wrong`,
+        //     })
+        // }
 
         res.status(200).json({
             ok: true,

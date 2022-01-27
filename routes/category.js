@@ -17,19 +17,26 @@ const router = Router()
 
 router.get('/', getCategories)
 
-router.get('/:uuid',
-    [
-        check('uuid', 'invalid id').isUUID('4'),
-        validarCampos
-    ],
-    getCategoryById)
 
-router.get('/user/categories',
+
+// router.get('/:uuid',
+//     [
+//         check('uuid', 'invalid id').isUUID('4'),
+//         validarCampos
+//     ],
+//     getCategoryById)
+
+
+
+router.get('/user',
     [
         validarCampos,
         validarJwt
     ],
     getCategoriesByUser)
+
+
+
 
 router.post('/',
     [

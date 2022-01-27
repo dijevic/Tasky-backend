@@ -1,6 +1,5 @@
 const { response, request } = require('express')
 const Category = require('../models/Category')
-const Usuario = require('../models/Usuario')
 
 const CreateCategory = async (req = request, res = response) => {
 
@@ -59,7 +58,8 @@ const getCategoriesByUser = async (req = request, res = response) => {
             status: 200,
             msg: `success`,
             categories: rows,
-            total: count
+            total: count,
+            user: 'by user'
 
         })
 
