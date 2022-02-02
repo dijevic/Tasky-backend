@@ -38,13 +38,13 @@ router.get('/user',
 
 
 
-router.post('/',
-    [
-        validarJwt,
-        check('name').custom(validateCategory),
-        validarCampos
-    ]
-    , CreateCategory)
+// router.post('/',
+//     [
+//         validarJwt,
+//         check('name').custom(validateCategory),
+//         validarCampos
+//     ]
+//     , CreateCategory)
 router.post('/',
     [
         validarJwt,
@@ -64,6 +64,7 @@ router.put('/:uuid',
         validarJwt,
         check('uuid').exists().isUUID('4'),
         check('name', 'name is required').exists().not().isEmpty(),
+        check('name').custom(validateCategory),
         validarCampos
     ]
     , updateCategory)
