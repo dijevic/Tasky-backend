@@ -1,168 +1,148 @@
 const { response, request } = require('express')
+const asyncWrapper = require('../middlewares/asyncWrapper')
 const Category = require('../models/Category')
 
-const CreateCategory = async (req = request, res = response) => {
+const CreateCategory = asyncWrapper(async (req = request, res = response) => {
 
     const { name } = req.body
     const user = req.usuario
 
-    try {
-
-        const category = await Category.create({ name, category_user_id: user.getDataValue('id') })
-
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `success`,
-            category
-
-        })
-
-    } catch (e) {
-        throw new Error(e)
-    }
-
-}
-const getCategories = async (req = request, res = response) => {
 
 
-    try {
-        const categories = await Category.findAll()
-        const total = await Category.count()
+    const category = await Category.create({ name, category_user_id: user.getDataValue('id') })
 
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `success`,
-            categories,
-            total
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `success`,
+        category
 
-        })
-
-    } catch (e) {
-        throw new Error(e)
-    }
-
-}
-const getCategoriesByUser = async (req = request, res = response) => {
+    })
 
 
 
-    try {
-        const user = req.usuario
-
-        const { rows, count } = await Category.findAndCountAll({ where: { category_user_id: user.getDataValue('id') } })
-
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `success`,
-            categories: rows,
-            total: count,
-            user: 'by user'
-
-        })
-
-    } catch (e) {
-        throw new Error(e)
-    }
-
-}
-const getCategoryById = async (req = request, res = response) => {
-
-    const { uuid } = req.params
-    try {
+})
+const getCategories = asyncWrapper(async (req = request, res = response) => {
 
 
-        const category = await Category.findOne({ where: { uuid } })
 
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `success`,
-            category
+    const categories = await Category.findAll()
+    const total = await Category.count()
 
-        })
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `success`,
+        categories,
+        total
 
-    } catch (e) {
-        throw new Error(e)
-    }
-
-}
+    })
 
 
-const deleteCategory = async (req = request, res = response) => {
+
+})
+const getCategoriesByUser = asyncWrapper(async (req = request, res = response) => {
+
+
+
+
+    const user = req.usuario
+
+    const { rows, count } = await Category.findAndCountAll({ where: { category_user_id: user.getDataValue('id') } })
+
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `success`,
+        categories: rows,
+        total: count,
+
+    })
+
+
+
+})
+const getCategoryById = asyncWrapper(async (req = request, res = response) => {
 
     const { uuid } = req.params
 
 
-    try {
-        const category = await Category.findOne({ where: { uuid } })
 
-        if (!category) {
-            return res.status(404).json({
-                ok: false,
-                status: 404,
-                msg: `something went wrong, there is not a category with that id`,
-            })
-        }
+    const category = await Category.findOne({ where: { uuid } })
 
-        await category.destroy()
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `success`,
+        category
+
+    })
 
 
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `category deleted successfully!`,
+
+})
 
 
+const deleteCategory = asyncWrapper(async (req = request, res = response) => {
+
+    const { uuid } = req.params
+
+
+
+    const category = await Category.findOne({ where: { uuid } })
+
+    if (!category) {
+        return res.status(404).json({
+            ok: false,
+            status: 404,
+            msg: `something went wrong, there is not a category with that id`,
         })
-
-    } catch (e) {
-        throw new Error(e)
     }
 
-}
-const updateCategory = async (req = request, res = response) => {
+    await category.destroy()
+
+
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `category deleted successfully!`,
+
+
+    })
+
+
+
+})
+const updateCategory = asyncWrapper(async (req = request, res = response) => {
 
     const { uuid } = req.params
     const { uuid: id, ...body } = req.body
 
+    const category = await Category.findOne({ where: { uuid } })
 
-
-
-    try {
-        const category = await Category.findOne({ where: { uuid } })
-
-        if (!category) {
-            return res.status(404).json({
-                ok: false,
-                status: 404,
-                msg: `something went wrong, there is not a category with that id`,
-            })
-        }
-
-        category.set(body)
-
-
-
-        await category.save()
-
-
-        res.json({
-            ok: true,
-            status: 200,
-            msg: `category updated successfully!`,
-            category
-
-
+    if (!category) {
+        return res.status(404).json({
+            ok: false,
+            status: 404,
+            msg: `something went wrong, there is not a category with that id`,
         })
-
-    } catch (e) {
-        throw new Error(e)
     }
 
-}
+    category.set(body)
+
+    await category.save()
+
+
+    res.json({
+        ok: true,
+        status: 200,
+        msg: `category updated successfully!`,
+        category
+
+
+    })
+
+})
 
 
 

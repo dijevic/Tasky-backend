@@ -3,7 +3,8 @@ const cors = require('cors');
 const sequelize = require('../DB/db.config');
 const Usuario = require('../models/Usuario')
 const Task = require('../models/Task')
-const Category = require('../models/Category')
+const Category = require('../models/Category');
+const notFound = require('../middlewares/notFound');
 
 
 
@@ -60,6 +61,7 @@ class Server {
         this.app.use(this.paths.user, require('../routes/user'))
         this.app.use(this.paths.task, require('../routes/task'))
         this.app.use(this.paths.category, require('../routes/category'))
+        this.app.use(notFound)
 
     }
 
