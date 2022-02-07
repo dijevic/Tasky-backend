@@ -21,6 +21,8 @@ const Task = sequelize.define('Task', {
     },
     category_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         get() {
             let rawValue = this.getDataValue('category_id');
             return rawValue = undefined;
@@ -44,7 +46,6 @@ const Task = sequelize.define('Task', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
     },
-
 
 
 

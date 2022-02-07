@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { response, request } = require('express');
-const Usuario = require('../models/Usuario')
+const Usuario = require('../models/Usuario');
+const verifyJWT = require('../helpers/verifyJWT');
 
 
 
@@ -14,8 +15,13 @@ const validarJwt = async (req = request, res = response, next) => {
 
     try {
 
-        const { id } = jwt.verify(token, process.env.PRIVATESECRETJWTKEY)
 
+        const jwtVerified = await verifyJWT(token)
+        console.log(jwtVerified)
+
+        if (!jwtVerified) return res.status(404).json({ msg: ` session expired`, ok: false, status: 404 })
+
+        const { id } = jwtVerified
 
         const usuario = await Usuario.findOne({ where: { uuid: id } })
         if (!usuario) {
@@ -29,7 +35,6 @@ const validarJwt = async (req = request, res = response, next) => {
 
 
     } catch (err) {
-        console.log(err)
         res.status(401).json({ msg: `invalid JWT` })
     }
 

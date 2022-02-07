@@ -37,7 +37,7 @@ class Server {
             Category.belongsTo(Usuario, { foreignKey: `category_user_id`, as: 'user_category_id' })
 
 
-            Category.hasMany(Task, { foreignKey: `category_id`, as: 'category_tasks' })
+            Category.hasMany(Task, { foreignKey: `category_id`, as: 'category_tasks', onDelete: 'SET NULL' })
             Task.belongsTo(Category, { foreignKey: `category_id`, as: 'task_category' })
 
 
