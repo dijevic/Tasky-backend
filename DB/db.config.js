@@ -10,7 +10,9 @@ const { Sequelize } = require('sequelize')
 
 // });
 
-PRODUCTION
+// PRODUCTION
+
+const test = ';;'
 
 const sequelize = new Sequelize('bcy6kjq7p7lcjmoivkih', 'untnjcnnl2p5u1u1', '1qozASuovYgka8ztZZCk', {
     host: 'bcy6kjq7p7lcjmoivkih-mysql.services.clever-cloud.com',
