@@ -17,7 +17,7 @@ const validarJwt = async (req = request, res = response, next) => {
 
 
         const jwtVerified = await verifyJWT(token)
-        console.log(jwtVerified)
+
 
         if (!jwtVerified) return res.status(404).json({ msg: ` session expired`, ok: false, status: 404 })
 
