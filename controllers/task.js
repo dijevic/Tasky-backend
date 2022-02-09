@@ -7,11 +7,13 @@ const asyncWrapper = require('../middlewares/asyncWrapper')
 
 const CreateTask = asyncWrapper(async (req = request, res = response) => {
 
-    const { description, task_category } = req.body
+    const { task_category, ...data } = req.body
     const user = req.usuario
 
+    console.log(data)
+
     const category = await Category.findOne({ where: { uuid: task_category } })
-    const task = await Task.create({ description, user_id: user.getDataValue('id'), category_id: category.getDataValue('id') })
+    const task = await Task.create({ ...data, user_id: user.getDataValue('id'), category_id: category.getDataValue('id') })
 
     res.json({
         ok: true,

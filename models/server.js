@@ -37,7 +37,7 @@ class Server {
             Category.belongsTo(Usuario, { foreignKey: `category_user_id`, as: 'user_category_id' })
 
 
-            Category.hasMany(Task, { foreignKey: `category_id`, as: 'category_tasks', onDelete: 'SET NULL' })
+            Category.hasMany(Task, { foreignKey: `category_id`, as: 'category_tasks' })
             Task.belongsTo(Category, { foreignKey: `category_id`, as: 'task_category' })
 
 
@@ -45,7 +45,8 @@ class Server {
             console.log('db online')
 
         } catch (e) {
-            throw new Error(e)
+            console.log(e)
+            // throw new Error(e)
         }
     }
 

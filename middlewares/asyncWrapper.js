@@ -4,7 +4,9 @@ const asyncWrapper = (fn) => {
         try {
             await fn(req, res)
         } catch (e) {
-            throw new Error(e)
+            res.json({ msg: e })
+            console.log(e)
+            // throw new Error(e)
         }
 
     }

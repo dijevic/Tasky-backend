@@ -30,6 +30,7 @@ const getUsers = async (req = request, res = response) => {
         if (populate) {
             const { count, rows } = await Usuario.findAndCountAll({ include: 'tasks' })
 
+            console.log(rows)
             return res.json({
                 ok: true,
                 status: 200,
@@ -52,6 +53,13 @@ const getUsers = async (req = request, res = response) => {
 
 
     } catch (e) {
+        res.json({
+            ok: false,
+            status: 404,
+            msg: `unsuccess`,
+
+        })
+
         throw new Error(e)
     }
 
@@ -103,7 +111,7 @@ const updateUser = async (req = request, res = response) => {
         const userUpdated = usuario.set(body)
 
         await userUpdated.save()
-        const token = await generaJWT(usuario.uuid)
+        // const token = await generaJWT(usuario.uuid)
 
         res.status(200).json({
             ok: true,
@@ -111,8 +119,8 @@ const updateUser = async (req = request, res = response) => {
             msg: 'user Updated !',
             id: userUpdated.uuid,
             name: userUpdated.name,
-            email: userUpdated.email,
-            token
+            // email: userUpdated.email,
+            // token
         })
 
     } catch (e) {
