@@ -41,7 +41,7 @@ class Server {
             Task.belongsTo(Category, { foreignKey: `category_id`, as: 'task_category' })
 
 
-            await sequelize.async({ alter: true })
+            await sequelize.authenticate()
             console.log('db online')
 
         } catch (e) {
