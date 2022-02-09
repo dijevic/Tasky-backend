@@ -182,6 +182,7 @@ const registrationCheckingEmail = asyncWrapper(async (req = request, res = respo
 
     const { email, password, name } = req.body
 
+
     // genero JWT 
     const token = await generarRegistrationJWT(email, password, name)
     const link = `https://taskys.netlify.app/auth/finish-registration/${token}`
