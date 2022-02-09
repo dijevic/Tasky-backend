@@ -90,28 +90,37 @@ const updateUser = async (req = request, res = response) => {
 
 
 
+
+
+
+        if (body.password.trim().length === 0) {
+            delete body.password
+
+        }
+
+        if (body.name.trim().length === 0) {
+            delete body.name
+        }
+
+
         if (body.password) {
             body.password = encriptar(body.password)
+
+
         }
 
         if (body.name) {
             body.name = body.name.toLowerCase()
         }
 
-        if (body.password && body.password.trim() == '') {
-            delete body.password
-        }
 
-        if (body.name.trim() == '') {
-            delete body.name
-        }
 
 
 
         const userUpdated = usuario.set(body)
 
         await userUpdated.save()
-        // const token = await generaJWT(usuario.uuid)
+        const token = await generaJWT(usuario.uuid)
 
         res.status(200).json({
             ok: true,
@@ -119,8 +128,8 @@ const updateUser = async (req = request, res = response) => {
             msg: 'user Updated !',
             id: userUpdated.uuid,
             name: userUpdated.name,
-            // email: userUpdated.email,
-            // token
+            email: userUpdated.email,
+            token
         })
 
     } catch (e) {

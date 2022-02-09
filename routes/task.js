@@ -25,7 +25,7 @@ router.get('/user/',
 
 router.post('/',
     [
-        check('description', 'the description is mandatory').not().isEmpty(),
+        check('title', 'the description is mandatory').not().isEmpty(),
         validarCampos,
         validarJwt
 
