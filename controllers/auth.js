@@ -29,7 +29,6 @@ const renewUserToken = asyncWrapper(async (req = request, res = response) => {
 const loginUser = asyncWrapper(async (req = request, res = response) => {
     const { email, password } = req.body
 
-    const test = process.env
     const usuario = await Usuario.findOne({
         where: { email }
     })
@@ -65,7 +64,7 @@ const loginUser = asyncWrapper(async (req = request, res = response) => {
         name: usuario.name,
         email: usuario.email,
         token,
-        test
+
     })
 
 
