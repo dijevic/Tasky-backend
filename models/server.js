@@ -44,6 +44,7 @@ class Server {
             await sequelize.authenticate()
             console.log('db online')
 
+
         } catch (e) {
             console.log(e)
             // throw new Error(e)
