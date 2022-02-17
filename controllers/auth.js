@@ -71,7 +71,7 @@ const loginUser = asyncWrapper(async (req = request, res = response) => {
 }
 )
 const registerUser = asyncWrapper(async (req = request, res = response) => {
-
+    // regustration! NOT VERIFICATION ****************
 
     let { password, email, name } = req.userData
 
@@ -135,7 +135,6 @@ const ForgotPassword = asyncWrapper(async (req = request, res = response) => {
 
     await usuario.update({ resetToken })
 
-    // Todo: camabiar a vriable d entorno
     const link = `https://taskys.netlify.app/auth/change-password/${resetToken}`
 
 

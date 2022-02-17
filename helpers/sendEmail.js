@@ -13,7 +13,7 @@ const sendRecoverEmail = async (email, link) => {
         html: `
         <b>Recover your account with the following link</b><br>
         <a href="${link}">recovering link</a><br>
-        <b>if the link does not work, please copy and paste the following link ${link} </b>`
+        <p>if the link does not work, please copy and paste the following link ${link} </p>`
     });
 }
 const sendRegistrationEmail = async (email, link) => {
@@ -26,8 +26,8 @@ const sendRegistrationEmail = async (email, link) => {
         subject: "confirm your email", // Subject line
         text: "Confirm you email !", // plain text body
         html: `<p>Hi ! here you have your link to finish the registration process</p>
-        <a href="${link}">  <b>Finish the registration</b>  </a><br>
-        <b>if the link does not work, please copy and paste the following link ${link} </b>`
+        <a href="${link}">  <b>Finish the registration</b>  </a><br><br>
+        <p>if the link does not work, please copy and paste the following link ${link} </p>`
     })
 
 
