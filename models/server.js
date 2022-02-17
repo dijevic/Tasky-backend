@@ -23,6 +23,8 @@ class Server {
         this.dbConection()
         this.middlewares()
         this.routes()
+        // test to keep heroku working 
+        this.keepHerokuWorking()
 
 
     }
@@ -73,6 +75,13 @@ class Server {
             console.log(`servidor corriendo en el puerto , ${this.port}`)
         })
 
+    }
+
+    keepHerokuWorking() {
+        const i = 0
+        setTimeout(() => {
+            i++
+        }, 1700000)
     }
 
 }
