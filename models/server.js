@@ -78,7 +78,7 @@ class Server {
     }
 
     keepHerokuWorking() {
-        const i = 0
+        let i = 0
         setTimeout(() => {
             i++
         }, 1700000)
